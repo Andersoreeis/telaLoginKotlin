@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "407031428498",
+    "project_id": "login-synbian",
+    "storage_bucket": "login-synbian.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407031428498:android:6dbf89b14f2dc6f712bd4b",
+        "android_client_info": {
+          "package_name": "br.senai.sp.jandira.loginsynbian"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABTxpFGeWz1QtcBd8wuomk0ZlgwA6o_2g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
