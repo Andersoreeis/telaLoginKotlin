@@ -1,14 +1,8 @@
 package br.senai.sp.jandira.loginsynbian.componenents
 
-import android.net.Uri
-import android.widget.Toast
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import android.util.Log
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -16,28 +10,35 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import retrofit2.http.Url
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.lifecycleScope
+import br.senai.sp.jandira.loginsynbian.componenents.API.ApiService
+import br.senai.sp.jandira.loginsynbian.componenents.API.RetrofitHelper
+import com.google.gson.JsonObject
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun BotaoLogin(
     textButton: String,
     corBotao: Color,
-    logar: () -> Unit,
     imagem :String,
     email :String,
-    senha:String
+    senha:String,
+    lifecycleScope: LifecycleCoroutineScope,
+    logar: () -> Unit,
+
 
 ) {
+
+
     Button(
-        onClick = { logar() },
+        onClick = { logar()
+                  createUser(lifecycleScope, email, senha, imagem)
+        },
         modifier = Modifier
             .width(230.dp)
             .height(50.dp),
@@ -55,5 +56,27 @@ fun BotaoLogin(
 
 
 
+private fun createUser( lifecycleScope:LifecycleCoroutineScope,login: String,senha: String,imagem: String) {
 
+    lateinit var apiService: ApiService
+
+    apiService = RetrofitHelper.getInstance().create(ApiService::class.java)
+
+
+    lifecycleScope.launch {
+        val body = JsonObject().apply {
+            addProperty("login", login)
+            addProperty("senha", senha)
+            addProperty("imagem", imagem)
+
+
+        }
+        val result = apiService.createAccount(body)
+        if (result.isSuccessful) {
+            Log.i("GETTING-DATA", "${result.body()}")
+        } else {
+            Log.i("GETTING-DATA", "${result.message()}")
+        }
+    }
+}
 

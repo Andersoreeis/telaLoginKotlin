@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LifecycleCoroutineScope
 import br.senai.sp.jandira.loginsynbian.componenents.BotaoLogin
 import br.senai.sp.jandira.loginsynbian.componenents.CampoEmailLogin
 import br.senai.sp.jandira.loginsynbian.componenents.CampoSenhaLogin
@@ -36,8 +37,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
+
 @Composable
-fun ScreenLogin() {
+fun ScreenLogin(lifecycleCoroutineScope: LifecycleCoroutineScope) {
     val estadoEmail = remember { mutableStateOf("") }
     val estadoSenha = remember { mutableStateOf("") }
     val estadoErroEmail = remember { mutableStateOf("") }
@@ -128,9 +130,10 @@ fun ScreenLogin() {
             Spacer(modifier = Modifier.height(20.dp))
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                BotaoLogin(textButton = "Login", corBotao = Color.White, imagem = "", email = "", senha = "", ) {
+                BotaoLogin(textButton = "Login", corBotao = Color.White, imagem = fotoUri.value.toString(), email = estadoEmail.value.toString(), senha = estadoSenha.value.toString(),lifecycleCoroutineScope  ) {
                     fotoUri.value?.let { uri ->
                         uploadImage(imageUri = uri, storageRef, context)
+                        fotoUri.value = uri
                     }
                 }
             }
