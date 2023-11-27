@@ -17,27 +17,33 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
 import br.senai.sp.jandira.loginsynbian.componenents.API.ApiService
 import br.senai.sp.jandira.loginsynbian.componenents.API.RetrofitHelper
+import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.JsonObject
 import kotlinx.coroutines.launch
-
 
 @Composable
 fun BotaoLogin(
     textButton: String,
     corBotao: Color,
-    imagem :String,
-    email :String,
-    senha:String,
+    imagem: String,
+    email: String,
+    senha: String,
     lifecycleScope: LifecycleCoroutineScope,
     logar: () -> Unit,
-
-
 ) {
-
-
     Button(
-        onClick = { logar()
-                  createUser(lifecycleScope, email, senha, imagem)
+        onClick = {
+            logar()
+            val user = FirebaseAuth.getInstance().currentUser
+            if (user != null) {
+                // O usuário está autenticado, chama createUser
+                Log.i("email", email)
+                Log.i("senha", senha)
+                Log.i("imagem",imagem)
+                createUser(lifecycleScope, email, senha, imagem)
+            } else {
+
+            }
         },
         modifier = Modifier
             .width(230.dp)
@@ -56,27 +62,31 @@ fun BotaoLogin(
 
 
 
-private fun createUser( lifecycleScope:LifecycleCoroutineScope,login: String,senha: String,imagem: String) {
-
+private fun createUser(
+    lifecycleScope: LifecycleCoroutineScope,
+    login: String,
+    senha: String,
+    imagem: String
+) {
     lateinit var apiService: ApiService
-
     apiService = RetrofitHelper.getInstance().create(ApiService::class.java)
 
-
     lifecycleScope.launch {
-        val body = JsonObject().apply {
-            addProperty("login", login)
-            addProperty("senha", senha)
-            addProperty("imagem", imagem)
+        try {
+            val body = JsonObject().apply {
+                addProperty("login", login)
+                addProperty("senha", senha)
+                addProperty("imagem", imagem)
+            }
+            val result = apiService.createAccount(body)
 
-
-        }
-        val result = apiService.createAccount(body)
-        if (result.isSuccessful) {
-            Log.i("GETTING-DATA", "${result.body()}")
-        } else {
-            Log.i("GETTING-DATA", "${result.message()}")
+            if (result.isSuccessful) {
+                Log.i("GETTING-DATA", "${result.body()}")
+            } else {
+                Log.i("GETTING-DATA", "${result.message()}")
+            }
+        } catch (e: Exception) {
+            Log.e("API_ERROR", "Error: ${e.message}")
         }
     }
 }
-

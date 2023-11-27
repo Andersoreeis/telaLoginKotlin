@@ -7,7 +7,7 @@ object RetrofitHelper {
 //http://localhost3000/usuario/cadastrarUsuario
 
 
-    private const val baseurl = "http://localhost3000"
+    private const val baseurl = "http://localhost:3000/"
     fun getInstance(): Retrofit {
         return Retrofit.Builder().baseUrl(baseurl)
             .addConverterFactory(GsonConverterFactory.create())

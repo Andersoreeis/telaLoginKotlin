@@ -56,7 +56,6 @@ fun ScreenLogin(lifecycleCoroutineScope: LifecycleCoroutineScope) {
     ) {
         fotoUri.value = it
     }
-    Log.e("foto", "EditarFoto: ${fotoUri}")
 
 
 
@@ -134,6 +133,8 @@ fun ScreenLogin(lifecycleCoroutineScope: LifecycleCoroutineScope) {
                     fotoUri.value?.let { uri ->
                         uploadImage(imageUri = uri, storageRef, context)
                         fotoUri.value = uri
+//                    //    Log.i("foto", "EditarFoto: ${fotoUri.value}")
+
                     }
                 }
             }

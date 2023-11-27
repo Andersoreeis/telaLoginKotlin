@@ -122,6 +122,7 @@ dependencies {
 
 
     implementation ("com.squareup.picasso:picasso:2.8")
+    implementation("androidx.navigation:navigation-compose:2.6.0")
 
 
 }

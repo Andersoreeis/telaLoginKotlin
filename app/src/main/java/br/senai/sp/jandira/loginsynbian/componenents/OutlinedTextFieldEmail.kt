@@ -44,7 +44,7 @@ fun CampoEmailLogin(value: String, aoMudar: (String) -> Unit, placeholder: Strin
             .fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = Color.White,
+            textColor = Color.Black,
             containerColor = Color.White,
             unfocusedBorderColor = Color.White,
             focusedBorderColor = Color.White,
